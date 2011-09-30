@@ -1,11 +1,11 @@
 #include <QtGui>
 #include "renderarea.h"
 
-#define SIDE_LENGTH 20
+#define SIDE_LENGTH 15
 
-RenderArea::RenderArea(QWidget* parent) :
-    QWidget(parent), cellular(21, 13)
+RenderArea::RenderArea(QWidget* parent) : QWidget(parent)
 {
+    cellular = new Cellular(34, 21);
     timer = new QTimer(this);
 
     connect(timer, SIGNAL(timeout()), this, SLOT(next()));
@@ -13,10 +13,11 @@ RenderArea::RenderArea(QWidget* parent) :
 
 RenderArea::~RenderArea() {
     delete timer;
+    delete cellular;
 }
 
 void RenderArea::next() {
-    cellular.next();
+    cellular->next();
     update();
 }
 
@@ -26,6 +27,15 @@ void RenderArea::play() {
 
 void RenderArea::stop() {
     timer->stop();
+}
+
+void RenderArea::save() {
+    cellular->save();
+}
+
+void RenderArea::restore() {
+    cellular->restore();
+    update();
 }
 
 int RenderArea::getCoordinate(int cell_index) const {
@@ -38,11 +48,11 @@ int RenderArea::getIndex(int coordinate) const {
 
 QSize RenderArea::minimumSizeHint() const
 {
-    return QSize(SIDE_LENGTH * (cellular.sizeX() + 1), SIDE_LENGTH * (cellular.sizeY() + 1));
+    return QSize(SIDE_LENGTH * (cellular->sizeX() + 1), SIDE_LENGTH * (cellular->sizeY() + 1));
 }
 
 void RenderArea::mousePressEvent(QMouseEvent* event) {
-    cellular.invertCell(getIndex(event->x()), getIndex(event->y()));
+    cellular->invertCell(getIndex(event->x()), getIndex(event->y()));
     update();
 }
 
@@ -58,9 +68,9 @@ void RenderArea::paintEvent(QPaintEvent*)
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.setPen(pen);
 
-    for (int x = 0; x < cellular.sizeX(); ++x) {
-        for (int y = 0; y < cellular.sizeY(); ++y) {
-            if (cellular.cell(x, y) == 0) painter.setBrush(brush_state0);
+    for (int x = 0; x < cellular->sizeX(); ++x) {
+        for (int y = 0; y < cellular->sizeY(); ++y) {
+            if (cellular->cell(x, y) == 0) painter.setBrush(brush_state0);
             else painter.setBrush(brush_state1);
         
             painter.save();

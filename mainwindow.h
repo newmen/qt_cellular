@@ -16,6 +16,8 @@ public:
 private:
      RenderArea* renderArea;
      Button* nextButton;
+     Button* saveButton;
+     Button* restoreButton;
      PlayButton* playButton;
 };
 

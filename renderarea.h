@@ -19,6 +19,9 @@ public slots:
     void play();
     void stop();
 
+    void save();
+    void restore();
+
 protected:
     int getCoordinate(int cell_index) const;
     int getIndex(int coordinate) const;
@@ -27,7 +30,7 @@ protected:
     void paintEvent(QPaintEvent* event);
 
 private:
-    Cellular cellular;
+    Cellular* cellular;
     QTimer* timer;
 };
 
