@@ -8,7 +8,7 @@ class RenderArea : public QWidget
 {
     Q_OBJECT
 public:
-    explicit RenderArea(QWidget *parent = 0);
+    explicit RenderArea(QWidget* parent = 0);
     virtual ~RenderArea();
 
     QSize minimumSizeHint() const;
@@ -20,7 +20,11 @@ public slots:
     void stop();
 
 protected:
-    void paintEvent(QPaintEvent *event);
+    int getCoordinate(int cell_index) const;
+    int getIndex(int coordinate) const;
+
+    void mousePressEvent (QMouseEvent* event);
+    void paintEvent(QPaintEvent* event);
 
 private:
     Cellular cellular;
