@@ -3,10 +3,10 @@
 
 MainWindow::MainWindow() {
    renderArea = new RenderArea(this);
-   nextButton = new Button(tr("Next"), this);
-   saveButton = new Button(tr("Save"), this);
-   restoreButton = new Button(tr("Restore"), this);
-   playButton = new PlayButton(tr("Play"), tr("Stop"), this);
+   nextButton = new Button("Next", this);
+   saveButton = new Button("Save", this);
+   restoreButton = new Button("Restore", this);
+   playButton = new PlayButton("Play", "Stop", this);
 
    connect(nextButton, SIGNAL(clicked()), renderArea, SLOT(next()));
    connect(saveButton, SIGNAL(clicked()), renderArea, SLOT(save()));
@@ -14,12 +14,19 @@ MainWindow::MainWindow() {
    connect(playButton, SIGNAL(timerStart()), renderArea, SLOT(play()));
    connect(playButton, SIGNAL(timerStop()), renderArea, SLOT(stop()));
 
+   QHBoxLayout *buttonsLayout = new QHBoxLayout;
+   buttonsLayout->addWidget(nextButton);
+   buttonsLayout->addWidget(saveButton);
+   buttonsLayout->addWidget(restoreButton);
+   buttonsLayout->addWidget(playButton);
+   QGroupBox *buttonsGroup = new QGroupBox;
+   buttonsGroup->setLayout(buttonsLayout);
+
    QVBoxLayout *mainLayout = new QVBoxLayout(this);
    mainLayout->addWidget(renderArea);
-   mainLayout->addWidget(nextButton, 0, Qt::AlignCenter);
-   mainLayout->addWidget(saveButton, 0, Qt::AlignCenter);
-   mainLayout->addWidget(restoreButton, 0, Qt::AlignCenter);
-   mainLayout->addWidget(playButton, 0, Qt::AlignCenter);
+   mainLayout->addWidget(buttonsGroup);
+
+   setWindowTitle("Conway's Game of Life");
 }
 
 MainWindow::~MainWindow() {

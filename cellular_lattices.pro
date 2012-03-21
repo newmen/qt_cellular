@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-TARGET = cellular_lattices
+TARGET = cellular_life
 TEMPLATE = app
 
 
